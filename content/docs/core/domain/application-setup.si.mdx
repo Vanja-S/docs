@@ -1,0 +1,29 @@
+---
+title: "Nastavitev Aplikacijske Domene"
+description: "Naučite se nastaviti domene za vaše aplikacije."
+---
+
+V tem priročniku je podrobno opisano, kako nastavite domeno za svojo aplikacijo.
+
+## Ustvarite DNS Zapis
+
+1. Dodajte `A` zapis vašim DNS nastavitvam:
+   - **Ime:** Vpišite domensko ime na katerega bo zapis kazal  (npr. `app` za `app.yourdomain.com`).
+   - **Naslov:** Vpišite IP naslov strežnika, npr. `1.2.3.4`.
+
+## Nastavitev Aplikacijske Domene
+
+1. Podjite na aplikacijsko nadzorno ploščo
+2. Izberite meni `Domains` in kliknite `Add Domain`.
+3. Vpišite DNS zapis, ki ste ga ustvarili v prejšnjem koraku (npr. `app.yourdomain.com`).
+4. Prepričajte se, da ste dodelili prava vrata kontejnerja (npr. NextJS: `3000`).
+5. Izberite opcijo certifikata:
+   - `None`
+   - `Let's Encrypt`
+   
+
+Podrobna navodila za nastavitev certifikatov so na voljo v dokumentaciji [Certifikati](/si/docs/core/domain/certificates).
+
+
+<ImageZoom  src="/assets/images/application-domain-setup/app-setup-domain.png" width={800} height={630} quality={100} priority alt='home og image' className="rounded-lg" />
+

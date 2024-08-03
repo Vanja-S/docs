@@ -1,0 +1,75 @@
+---
+title: "Nastavitev Docker Compose"
+description: "Naučite se kako nastaviti domeno Docker Compose aplikaciji."
+---
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+V tem vodniku je podrobno opisano, kako nastaviti domeno za Docker Compose aplikacijo.
+
+## Ustvarite DNS Zapis
+
+1. Dodajte `A` zapis vašim DNS nastavitvam:
+   - **Ime:** Vpišite domensko ime na katerega bo zapis kazal  (npr. `app` za `app.yourdomain.com`).
+   - **Naslov:** Vpišite IP naslov strežnika, npr. `1.2.3.4`.
+
+## Nastavitev Domene za Docker Compose
+
+Če želite, da je storitev ali kontejner Docker Compose-a dostopen prek domene, obstoječi datoteki Docker Compose dodajte dve stvari.
+
+<Steps>
+  <Step>
+  Dodajte omrežje `dokploy-network` vsaki storitvi.
+  ```yaml
+  services:
+    app:
+      image: nextjs-app
+      networks:
+        - dokploy-network
+      ports:
+        - "3000"
+
+  networks:
+    dokploy-network:
+      external: true
+  ```
+  </Step>
+  <Step>
+  Dodajte Traefik oznake, da je storitev dostopna prek domene.
+
+  1. Če uporabljate privzeto konfiguracijo Cloudflare, dodajte naslednjo oznako:
+
+  - `traefik.http.routers.<unique-name>.entrypoints=web`
+
+  2. Če uporabljate način Let's Encrypt ali Cloudflare Full Strict, dodajte naslednje oznake:
+
+  - `traefik.http.routers.<unique-name>.entrypoints=websecure`
+  - `traefik.http.routers.<unique-name>.tls.certResolver=letsencrypt`
+
+
+  ```yaml
+  services:
+    app:
+      image: nextjs-app
+      networks:
+        - dokploy-network
+      ports:
+        - "3000"
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.<unique-name>.entrypoints=websecure"
+        - "traefik.http.routers.<unique-name>.tls.certResolver=letsencrypt"
+        - "traefik.http.routers.<unique-name>.rule=Host(`app.yourdomain.com`)"
+        - "traefik.http.services.<unique-name>.loadbalancer.server.port=3000"
+  networks:
+    dokploy-network:
+      external: true
+  ```
+  </Step>
+</Steps>
+
+
+
+### Primer Enostavnega `docker-compose.yml`
+
+
+Za primer enostavne datoteke `docker-compose.yml`, se obrnite na dokumentacijo o [primeru Docker Compose](/si/docs/core/docker-compose/example#vodnik). 

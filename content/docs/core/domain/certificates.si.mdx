@@ -1,0 +1,59 @@
+---
+title: "Certifikati"
+description: "Naučite se postaviti in dodeliti certifikate Dokploy panelu."
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Pri uporabi domene za Dokploy ponujamo 3 možnosti za potrdila:
+
+- Uporabite `None`.
+- Uporabite brezplačni SSL certifikat avtoritete [Let's Encrypt](https://letsencrypt.org/).
+- Uporabite SSL certifikat po meri.
+
+## None
+
+Uporaba vrednosti `None` enostavno pomeni, da ne bo dodeljen `tlsResolver`, da lahko vaš ponudnik DNS storitev implementira SSl certifikate iz svojega strežnika.
+
+<Callout title="Cloudflare">Ko registrirate domeno na Cloudflare, se SSL certifikat avtomatsko dodeli s strani Cloudflare. Zato izberete opcijo `None` v Dokploy-u in onemogočite HTTPS.</Callout>
+
+## Let's Encrypt
+
+Uporaba brezplačnega SSL certifikata [Let's Encrypt](https://letsencrypt.org/) je najlažja možnost, vendar ima nekaj omejitev:
+
+1. **Omejitve Certifikatov**: V določenem časovem okviru lahko izdate omejeno število potrdil na domeno in račun.
+2. **Kratko Obdobje Veljavnosti**: Potrdila so veljavna le 90 dni, vendar jih Traefik samodejno podaljša namesto vas.
+3. **Potrdila z Oznako Wildcard**: Čeprav so podprta, je za pridobitev nadomestnih potrdil potrebno preverjanje DNS-01, ki je lahko bolj zapleteno.
+4. **Validacija Domene**: Let's Encrypt zagotavlja samo potrdila za validacijo domene (DV), kar pomeni, da preverja samo lastništvo domene, ne pa tudi organizacije, ki stoji za njo.
+5. **Brez Garancije**: Potrdila so na voljo brez kakršne koli garancije ali kritja odgovornosti, kar morda ni primerno za vse primere uporabe.
+
+### Ostali Ponudniki
+
+Za domene, ki jih upravljajo ponudniki, ki niso Cloudflare, je postopek preprost:
+
+1. V Dokploy-u, izberete `Let's Encrypt` in omogočite `HTTPS`.
+2. Prepričajte se, da so zapisi DNS pravilno nastavljeni tako, da kažejo na vaš strežnik.
+3. Traefik bo poskrbel za vse ostalo in potrdilo bo ustvarjeno v približno 20 sekundah.
+
+### Cloudflare Nastavitev
+
+Če vašo domeno upravlja Cloudflare:
+
+1. Prepričajte se, da je vaša domena v storitvi Cloudflare nastavljena na način `Full (Strict)`.
+2. V Dokploy-u, izberite `Let's Encrypt` in omogočite `HTTPS`.
+
+Koraki za konfiguracijo storitve Cloudflare:
+
+1. Prijavite se v Cloudflare in pojdite na `Websites` -> `Your Domain` -> `SSL/TLS` -> `Overview`.
+2. Na voljo so 4 različni načini (Off, Flexible, Full, Full (Strict)).
+3. Za uporabo Let's Encrypt, izberite `Full (Strict)`.
+
+<Callout>
+  **Note:** Pri ustvarjanju domene v aplikaciji poskrbite, da uporabite certifikat `Let's Encrypt` in omogočite `HTTPS`. Generiranje potrdil običajno traja približno 20 sekund. Če se potrdilo ne ustvari, ponovno zaženite Traefik in poskusite znova.
+</Callout>
+
+## SSL Po Meri
+
+Zagotavljamo način, za ustvarjanje potrdila in omogočiti, da se Traefik nanj sklicuje, vendar to še ne pomeni, da bo delovalo samodejno. Za njegovo uporabo morate prilagoditi konfiguracijo Traefik.
+
+Za ustvarjanje certifikata po meri, si preberite Traefik-ovo dokumentacijo [tukaj](https://docs.traefik.io/https/acme/#custom-ssl-certificates).

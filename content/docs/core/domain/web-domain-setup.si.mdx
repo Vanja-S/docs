@@ -1,0 +1,33 @@
+---
+title: "Nastavitev Spletne Domene"
+description: "Naučite se, kako nastaviti glavno domeno za ploščo Dokploy."
+---
+
+Ta priročnik zajema osnovno nastavitev glavne domene za vašo ploščo Dokploy.
+
+## DNS Nastavitev
+
+Uporabili bomo [Cloudflare](https://www.cloudflare.com/) za upravljanje DNS, vendar lahko uporabite kateregakoli ponudnika. Koraki se ne bi smeli preveč razlikovati.
+
+1. Prijavite se v Cloudflare in pojdite na `Websites` -> `Your Domain` -> `DNS` -> `Records`.
+2. Izberite `Add record`, tipa `A`.
+3. Vpišite `poddomeno` v vnosu za ime in vaš IP naslov (npr. `1.2.3.4`) v vnosno polje.
+4. Shranite zapis. Vaš DNS zapis bo `poddomena.dokploy.com`, uporabite lahko tudi korensko domeno.
+
+<ImageZoom src="/assets/images/web-domain-setup/domain-setup.png" width={800} height={630} quality={100} priority alt='home og image' className="rounded-lg" />
+
+
+## Nastavitev Domene Dokploy Plošče
+
+1. Vpišite se v vašo Dokploy ploščo.
+2. Pojdite v `/dashboard/settings/server`.
+3. Pod `Server Domain`, nastavite tisto domeno, ki ste jo konfigurirali v Cloudflare (npr. `poddomena.dokploy.com`).
+4. Izberite opcijo za certifikat:
+   - `None`
+   - `Let's Encrypt`
+6. Do svoje plošče lahko dostopate preko `https://poddomena.dokploy.com`.
+
+
+Podrobna navodila za nastavitev certifikatov so na voljo v dokumentaciji [Certifikati](/si/docs/core/domain/certificates).
+
+<ImageZoom src="/assets/images/web-domain-setup/dokploy-setup.png" width={800} height={630} quality={100} priority alt='home og image' className="rounded-lg" />
