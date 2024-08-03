@@ -55,6 +55,7 @@ export function generateMetadata({
 			languages: {
 				zh: `${baseUrl}/cn${page.url.replace("/cn", "")}`,
 				en: `${baseUrl}/en${page.url.replace("/en", "")}`,
+				si: `${baseUrl}/si${page.url.replace("/si", "")}`,
 			},
 		},
 		openGraph: {

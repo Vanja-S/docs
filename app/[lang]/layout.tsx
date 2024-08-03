@@ -81,6 +81,17 @@ export default function Layout({
 							nextPage: "下一頁",
 							chooseLanguage: "選擇語言",
 						},
+						si: {
+							name: "Slovenian",
+							toc: "Na tej strani",
+							search: "Iščite",
+							lastUpdate: "Nazadnje posodobljeno",
+							searchNoResult: "Ni rezultatov",
+							previousPage: "Nazaj",
+							nextPage: "Naprej",
+							chooseLanguage: "Izberite jezik",
+							tocNoHeadings: "Na tej strani ni poglavji"
+						},
 					}}
 				>
 					<RootProvider>
