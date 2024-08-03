@@ -1,0 +1,29 @@
+---
+title: 'Arhitektura Dokploy-a'
+description: 'Pregled osnovnih komponent arhitekture Dokploy-a.'
+---
+
+Razumevanje arhitekture Dokploy-a je pomembna za namestitev in skaliranje aplikacij. Spodnji diagram ilustrira osnovne komponente:
+
+<ImageZoom src="/assets/architecture.png" alt="Arhitekturni Diagram" width={1000} height={600} className="rounded-lg"/>
+
+
+## Proces Namestitve
+
+Ko je Dokploy nameščen, samodejno nastavi naslednje komponente:
+
+1. **Next.js Aplikacijo**: Uporablja se kot sprednji klientski sistem. Uporaba Next.js omogoča integrirano izkušnjo upodabljanja na strani strežnika ter poenostavitev uporabniškega vmesnika in zaledja v eno samo celovito aplikacijo.
+2. **PostgreSQL Podatkovno Bazo**: Deluje kot primarna podatkovna zbirka za Dokploy, ki je bila izbrana zaradi svoje robustnosti in široke uporabljenosit v industriji. V njej so shranjeni vsi konfiguracijski in operativni podatki.
+3. **Redis Podatkovno Bazo**: Uporablja se za upravljanje čakalnih vrst za namestitve. S tem je zagotovljeno, da se ne sproži več namestitev hkrati, kar bi lahko povzročilo veliko obremenitev strežnika in morebitno zamrznitev.
+4. **Traefik**: UUporablja se kot povratni posrednik in razporejevalnik obremenitve. Traefik omogoča dinamično usmerjanje in odkrivanje storitev, kar poenostavlja postopek konfiguracije, saj omogoča deklarativno nastavitev prek uporabniškega vmesnika.
+
+## Namen in Funkcionalnost
+
+Vsaka komponenta v arhitekturi Dokploy igra svojo vlogo:
+
+- **Next.js**: Zagotavlja skalabilno in za upravljanje enostavno ogrodje za sprednji del, ki v eni platformi vsebuje logiko na strani strežnika in klienta. To poenostavlja uvajanje in razvojne postopke.
+- **PostgreSQL**: Zagotavlja zanesljivo in varno shranjevanje podatkov. Njegova uporaba v Dokploy zagotavlja doslednost in visoko zmogljivost vseh operacij podatkovne zbirke.
+- **Redis**: Skrbi za sočasnost in razporejanje opravil. Z uporabo Redisa lahko Dokploy učinkovito upravlja namestitvena opravila, pri čemer se izogne trkom in preobremenitvi strežnika med hkratnimi operacijami.
+- **Traefik**: Izboljšana integracija s programom Docker. Njegova zmožnost deklarativnega branja in pisanja v konfiguracije Dockerja omogoča, da Dokploy avtomatizira in poenostavi upravljanje omrežnega prometa in odkrivanje storitev.
+
+Ta struktura zagotavlja, da Dokploy ni le učinkovit pri uvajanju aplikacij, temveč tudi zanesljiv pri obvladovanju prometa in podatkov v velikem obsegu.

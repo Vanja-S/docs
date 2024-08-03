@@ -1,0 +1,145 @@
+---
+title: 'Ročna Namestitev'
+description: 'Naučite se ročno namestiti Dokploy na vaš strežnik.'
+---
+
+Če želite prilagoditi namestitev Dokploy-a na strežniku, lahko spremenite več vidikov:
+
+1. **Uporaba specifičnih vrat za Dokploy** - Idealno za preprečevanje konfliktov z drugimi storitvami.
+2. **Izberite določeno različico programa Dokploy** - Izbirate lahko med različicami, kot so kanarček, najnovejša ali določena različica Docker značke (npr. v0.0.1).
+3. **Določite HTTP in HTTPS vrata za Traefik** - Uporabno pri uporabi skupaj z drugimi strežniki, kot je Nginx.
+
+## Namestitvena Skripta
+
+Here is a Bash script for installing Dokploy on a Linux server. Make sure you run this as root on a Linux environment that is not a container, and ensure ports 80 and 443 are free.
+Sladi Bash skripta za namestitev programa Dokploy na Linux-ov strežnik. Prepričajte se, da jo zaženete kot root v okolju Linux, ki ni kontejner, in zagotovite, da sta vrati 80 in 443 prosti.
+
+```bash
+#!/bin/bash
+# Zagotovite, da se skripta zažene kot root
+if [ "$(id -u)" != "0" ]; then
+    echo "This script must be run as root" >&2
+    exit 1
+fi
+
+# Preverite za operacijski sistem Linux (ne macOS ali znotraj Docker kontejnerja)
+if [ "$(uname)" = "Darwin" ]; then
+    echo "This script must be run on Linux" >&2
+    exit 1
+fi
+
+if [ -f /.dockerenv ]; then
+    echo "This script must be run on a native Linux host" >&2
+    exit 1
+fi
+
+# Preverite zasedenost vrat
+if ss -tulnp | grep ':80 ' >/dev/null; then
+    echo "Error: Port 80 is already in use" >&2
+    exit 1
+fi
+
+if ss -tulnp | grep ':443 ' >/dev/null; then
+    echo "Error: Port 443 is already in use" >&2
+    exit 1
+fi
+
+# Funkcija za preverjanje, ali ukaz obstaja
+command_exists() {
+  command -v "$@" > /dev/null 2>&1
+}
+
+# Namestitev Docker-ja, če ni nameščen
+if command_exists docker; then
+  echo "Docker already installed"
+else
+  curl -sSL https://get.docker.com | sh
+fi
+
+# Inicializacija Docker Swarm
+docker swarm leave --force 2>/dev/null
+advertise_addr=$(curl -s ifconfig.me)
+docker swarm init --advertise-addr $advertise_addr
+echo "Swarm initialized"
+
+# Ustvarjanje omrežja
+docker network rm -f dokploy-network 2>/dev/null
+docker network create --driver overlay --attachable dokploy-network
+echo "Network created"
+
+# Pripravite konfiguracijskega direktorija
+mkdir -p /etc/dokploy
+chmod -R 777 /etc/dokploy
+
+# Potegnite in namestite Dokploy
+docker pull dokploy/dokploy:latest
+docker service create \
+  --name dokploy \
+  --replicas 1 \
+  --network dokploy-network \
+  --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
+  --mount type=bind,source=/etc/dokploy,target=/etc/dokploy \
+  --publish published=3000,target=3000,mode=host \
+  --update-parallelism 1 \
+  --update-order stop-first \
+  -e PORT=<Value For PORT eg(3000)> \
+  -e TRAEFIK_SSL_PORT=<Value For SSL PORT eg(444)> \
+  -e TRAEFIK_PORT=<VALUE FOR TRAEFIK HTTP PORT eg(81)> \
+  dokploy/dokploy:latest
+
+# Sporočilo o uspehu
+GREEN="\033[0;32m"
+YELLOW="\033[1;33m"
+BLUE="\033[0;34m"
+NC="\033[0m" # No Color
+printf "${GREEN}Congratulations, Dokploy is installed!${NC}\n"
+printf "${BLUE}Wait 15 seconds for the server to start${NC}\n"
+printf "${YELLOW}Please go to http://${advertise_addr}:3000${NC}\n\n"
+
+```
+
+Ta skripta vključuje preverjanje pogostih problemov, namestitev programa Docker, če še ni nameščen, inicializacijo Docker Swarm-a, ustvarjanje omrežja in nato potegnitev in namestitev programa Dokploy. Ko skripta konča, prikaže sporočilo o uspehu in navodila za dostop do Dokploy-a.
+
+Ta strukturirana oblika jasno določa predpogoje, korake in informacije po namestitvi, tako da je prijazna do uporabnika in dostopna tistim, ki izvajajo ročno namestitev.
+
+## Prilagoditev Namestitve
+
+#### Prilagotite oglaševani naslov Swarm-a 
+
+Parameter --advertise-addr v ukazu docker swarm init določa IP naslov ali vmesnik, ki ga mora upraviteljsko vozlišče Docker Swarm-a oglaševati drugim vozliščem v Swarm-u. Ta naslov uporabljajo druga vozlišča za komunikacijo z upraviteljem.
+
+Privzeto ta skripta uporablja zunanji IP naslov strežnika, ki ga dobite z ukazom `curl -s ifconfig.me`. Vendar boste morda morali ta naslov prilagoditi glede na konfiguracijo omrežja, zlasti če ima strežnik več omrežnih vmesnikov ali če postavljate Swarm v zasebnem omrežju.
+
+Če želite prilagoditi parameter --advertise-addr, vrstico: `advertise_addr=$(curl -s ifconfig.me)` zamenjajte z želenim IP naslovom ali vmesnikom, na primer:
+`advertise_addr="192.168.1.100"`
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+<Callout type="warn">**Opozorilo:** Ta IP naslov mora biti dostopen vsem vozliščem, ki se bodo pridružila Swarm-u.</Callout>
+
+
+## Obstoječi Docker swarm
+
+Če imaste na strežniku že delujoč Docker Swarm in želite uporabiti Dokploy, se mu lahko pridružite z naslednjim ukazom:
+
+```bash
+docker network create --driver overlay --attachable dokploy-network
+
+mkdir -p /etc/dokploy
+
+chmod -R 777 /etc/dokploy
+
+docker pull dokploy/dokploy:latest
+
+# Namestitev
+docker service create \
+  --name dokploy \
+  --replicas 1 \
+  --network dokploy-network \
+  --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
+  --mount type=bind,source=/etc/dokploy,target=/etc/dokploy \
+  --publish published=3000,target=3000,mode=host \
+  --update-parallelism 1 \
+  --update-order stop-first \
+  dokploy/dokploy:latest
+```

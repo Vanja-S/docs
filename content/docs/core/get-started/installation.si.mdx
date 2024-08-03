@@ -1,0 +1,72 @@
+---
+title: Namestitev
+description: "S tem vodnikom za namestitev v nekaj minutah vzpostavite in zaženite Dokploy na svojem strežniku."
+---
+
+
+Če želite lokalno nastaviti program Dokploy in ga namestiti v strežnik ter tako učinkovito upravljati kontejnerje in aplikacije Docker, sledite tem korakom:
+
+> Te korake morate opraviti v podanem vrstnem redu!
+
+1. [Postavitev virtualnega zasebnega strežnika (VPS)](#virtualni-zasebni-strežnik-vps)
+2. [Končni koraki pri nastavljanju Dokploy-a](#končni-koraki)
+
+## Virtualni Zasebni Strežnik (VPS)
+
+Izbirate lahko med več ponudniki VPS-jev:
+
+### Ponudniki
+
+- [DigitalOcean](https://www.digitalocean.com/pricing/droplets#basic-droplets)
+- [Hetzner](https://www.hetzner.com/cloud/)
+- [Linode](https://www.linode.com/es/pricing/#compute-shared)
+- [Vultr](https://www.vultr.com/pricing/#cloud-compute)
+- [Scaleway](https://www.scaleway.com/en/pricing/?tags=baremetal,available)
+- [Google Cloud](https://cloud.google.com/)
+- [AWS](https://aws.amazon.com/ec2/pricing/)
+
+Dokploy smo preiskusili na naslednjih distribucijah Linux-a:
+
+- Ubuntu 24.04 LTS
+- Ubuntu 23.10
+- Ubuntu 22.04 LTS
+- Ubuntu 20.04 LTS
+- Ubuntu 18.04 LTS
+- Debian 12
+- Debian 11
+- Debian 10
+- Fedora 40
+- Centos 9
+- Centos 8
+
+### Sistemske Zahteve
+
+Za nemoteno uporabo storitve Dokploy mora imeti vaš strežnik vsaj **2 GB pomnilnika RAM in 30 GB prostora na disku**. Ta specifikacija pomaga zagotoviti vire, ki jih Docker porabi med gradnjo, in preprečuje zamrznitev sistema.
+
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+<Callout>**Predlog:** Za najmanjše stroške z zanesljivimi storitvami priporočamo Hetzner kot ponudnika VPS z najboljšim razmerjem med ceno in kakovostjo.</Callout>
+
+
+### Docker in Dokploy
+
+Dokploy uporablja Docker, zato je nujno, da je ta nameščen na strežniku. Če Docker še ni nameščen, ga skupaj z Dokploy-jem samodejno namestite z naslednjim ukazom:
+
+```bash
+curl -sSL https://dokploy.com/install.sh | sh
+```
+
+## Končni Koraki
+
+Ko zaženete namestitveno skripto, bodo Dokploy in njegove odvisnosti nameščene na strežniku. Sledi opis, kako dokončati namestitev in začeti z uporabo Dokploy-a:
+
+### Dostopanje do Dokploy-a
+
+Odprite spletni brskalnik in pojdite na naslov `http://ip-naslov-vašega-vpsja:3000`. Preusmerjeni boste na začetno stran, kjer lahko nastavite admin račun za Dokploy.
+
+### Začetna Konfiguracija
+
+1. **Ustvarite Admin Račun:** Izpolnite potrebne podatke za nastavitev admin računa za Dokploy.
+
+ <ImageZoom  src="/assets/images/setup.png" width={1300} height={630} alt='home og image' className="rounded-lg" />

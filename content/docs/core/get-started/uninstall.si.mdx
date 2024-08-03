@@ -1,0 +1,32 @@
+---
+title: Odstranitev
+description: "Naučite se odstraniti Dokploy iz strežnika."
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+Za popolno odstranitev programa Dokploy in njegovih komponent iz strežnika sledite naslednjim korakom.
+
+<Steps>
+   <Step>
+   Odstranite storitve Docker Swarm, ki jih je ustvaril Dokploy:
+
+      ```bash
+      docker service rm dokploy dokploy-traefik dokploy-postgres dokploy-redis
+      ```
+   </Step>
+   <Step>
+   Odstranite volumne Docker-ja, ki jih je ustvaril Dokploy:
+
+   ```bash
+   docker volume rm -f dokploy-postgres-database redis-data-volume
+   ```
+   </Step>
+   <Step>
+   S strežnika odstranite datoteke in direktorije Dokploy-a:
+
+   ```bash
+   sudo rm -rf /etc/dokploy
+   ```
+   </Step>
+</Steps>
