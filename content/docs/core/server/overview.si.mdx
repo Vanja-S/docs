@@ -1,0 +1,66 @@
+---
+title: Pregled Strežnika
+description: 'Dokploy ponuja več funkcij za učinkovito upravljanje strežnika. Te vključujejo upravljanje nastavitev strežnika, profilov, videza, destinacij S3, certifikatov in uporabnikov.'
+---
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Ponujamo več funkcij za neposredno upravljanje in interakcijo s strežnikom.
+
+## Strežniška Domena
+
+Nastavite domeno strežnika, da bo vaša plošča dostopna prek domene.
+
+1. Nastavite domeno
+2. Nastavite e-pošto za Let's Encrypt.
+3. Izberite opcijo za certifikat.
+
+## Github
+
+Konfigurirajte račun GitHub za upravljanje organizacijskih ali osebnih projektov. Ta razdelek vas vodi skozi ustvarjanje aplikacije GitHub in nameščanje skladišč.
+
+## Nastavitne Spletnega Strežnika
+
+Upravljajte več nastavitev za strežnik.
+
+### Server
+
+Razdelek `Server` omogoča različne funkcije:
+
+- **Osvežitev Instance**: Osvežite instanco Dokploy.
+- **Gledanje Dnevnikov**: Spremljajte dnevnike strežnika.
+- **Konfiguracija Traefik**: Oglejte si glavne konfiguracije Traefik.
+- **Pregled Vmesnih Programov**: Oglejte si aktivne vmesne programe (middleware).
+- **Dostop Preko SSH**: Vstopite v strežniški terminal (potreben je ključ SSH).
+
+### Traefik
+
+Dostop do nastavitev Traefik in upravljanje z njimi:
+
+- **Osvežitev**: Osvežite konfiguracijo Traefik.
+- **Gledanje Dnevnikov**: Oglejte si dnevnike Traefik.
+- **Pogled Konfiguracije**: Pregled in dostop do konfiguracije Traefik.
+- **Terminalni Dostop**: Dostop do Traefika prek ukazne vrstice.
+
+### Upravljanje Prostora
+
+Upravljajte prostor v strežniku s čiščenjem neuporabljenih slik, volumnov in Docker kontejnerjev.
+
+1. Počistite neuporabljene slike.
+2. Počistite neuporabljene volumne.
+3. Počistite zaustavljene kontejnerje.
+4. Počistite predpomnilnik in sistem Docker.
+5. Počistite podatke za monitoriranje.
+6. Počistite vse.
+7. Vklopite funkcijo za zagon dnevnega opravila čiščenja.
+
+### Posodobitve
+
+Preverite posodobitve Dokploy in jih po potrebi uporabite. Ko preverite posodobitve, se odpre modalno okno z akcijskim gumbom za preverjanje posodobitev. Če je na voljo nova različica, bo gumb pokazal, da se nalaga. Po nekaj sekundah bo prikazana nova različica in omogočena posodobitev.
+
+#### Upoštevajte Sledeče
+
+- Postopek posodobitve običajno traja od 20 sekund do 1 minute.
+- Vse vaše storitve in domene bodo med posodobitvijo še naprej delovale, zato je uporaba posodobitve varna.
+- Ne odgovarjamo za izpade, ki jih povzroči postopek posodabljanja.
+- Posodobitev priporočamo, če imate težave z hroščem ali želite dostopati do novih funkcij.
+- Pomembno je, da pred posodobitvijo preberete opombe o novi različici, da se izognete nepričakovanim težavam.

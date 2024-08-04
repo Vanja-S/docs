@@ -1,0 +1,87 @@
+---
+title: Gruča (Napredno)
+description: 'Upravljajte nastavitve strežniške gruče.'
+---
+
+Ko namestite aplikacije v programu dokploy, se vse izvajajo na istem vozlišču. Če želite aplikacijo zagnati na drugem strežniku, lahko uporabite funkcionalnost gruče.
+
+Ideja uporabe gruč je, da vsak strežnik gosti različno aplikacijo in z uporabo storitve Traefik skupaj z razporejevalnikom obremenitve preusmeri promet iz strežnika Dokploy na izbrane strežnike.
+
+## Metodi Skaliranja Strežnika
+
+Obstajata dva primarna načina skaliranja strežnika:
+
+1. **Vertikalno Skaliranje**: Pri tem je treba istemu Dokploy strežniku dodati več virov, na primer več procesorske moči in pomnilnika RAM.
+2. **Horizontalno Skaliranje**: Ta metoda vključuje dodajanje več strežnikov.
+
+### Vertikalno Skaliranje
+
+Za povečanje zmogljivosti obdelave aplikacij priporočamo uporabo vertikalnega skaliranja, saj je hitrejše in zahteva manj dodatne konfiguracije.
+
+Če želite izvajati vertikalno skaliranje, morate Dokploy strežniku dodati več virov, tj. več procesorjev in pomnilnika RAM. To lahko storite prek svojega VPS ponudnika.
+
+Najbolje je, da najprej preverite omejitev vertikalnega skaliranja, ki jo lahko prenesete. Če se vam zdi nezadostna, lahko razmislite o horizontalnem skaliranju.
+
+### Horizontalno Skaliranje
+
+Horizontalno skaliranje običajno zahteva več dodatne konfiguracije in vključuje dodajanje večih strežnikov (VPS).
+
+Če izberete drugo možnost, bomo nadaljevali z nastavljanjem različnih strežnikov.
+
+## Zahteve za Nastavitev Gruče
+
+1. Dokploy strežnik mora biti postavljen (Upravitelj).
+2. Imejte vsaj en dodaten strežnik z enako arhitekturo kot upraviteljski Dokploy strežnik.
+3. Imejte Docker register.
+
+## Konfiguracija Docker Registra
+
+Za začetek moramo konfigurirati Docker register, saj pri nameščanju aplikacije potrebujete register za nameščanje in prenos slike aplikacije na druge strežnike.
+
+Na voljo sta dva načina za konfiguriranje registra:
+
+1. **Eksterni Register**: Uporabite katerikoli register, ki ga želite.
+2. **Samogostujoč Register**:  Za vas ustvarimo in konfiguriramo samogostujoč register.
+
+### Eksterni Register
+
+Uporabite lahko kateri koli register, na primer Docker Hub, DigitalOcean Spaces, ECR ali po lastni izbiri. Pred dodajanjem registra se prepričajte, da ste vnesli pravilne poverilnice in preizkusili povezavo.
+
+### Samogostujoč Register
+
+Vpisali boste te tri stvari:
+
+1. Uporabnika.
+2. Geslo.
+3. Domeno. Prepričajte se, da ta domena kaže na Dokploy-ev VPS.
+
+Po nastavitvi bo razdelek `Cluster` odklenjen.
+
+## Razumevanje Docker Swarm-a
+
+Predlagamo, da preberete te informacije, da boste bolje razumeli delovanje programa Docker Swarm in njegovo orkestracijo:  [Docker Swarm dokumentacija](https://docs.docker.com/engine/swarm/) in njegovo arhitekturo: [Kako deluje Docker Swarm?](https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/).
+
+## Upravljanje Vaše Gruče
+
+Zdaj lahko storite dve stvari:
+
+1. Dodajte delavce.
+2. Dodajte upravitelje.
+
+Upravitelji imajo dve funkcionalnosti
+
+1. Upravljanje stanja gruče.
+2. Načrtovanje storitev.
+
+Delavci imajo en sam namen, in sicer upravljanje kontejnerjev v skladu s pravili, ki jih je oblikoval ali določil upravitelj.
+
+## Dodajanje Vozlišč
+
+You can click the 'Add Node' button, which will display the instructions you need to follow to add your servers as nodes and join them to the dokploy manager node.
+Kliknite gumb 'Add Node', ki bo prikazal navodila za dodajanje strežnikov kot vozlišč in njihovo povezavo z upraviteljskim vozliščem Dokploy-a.
+
+<ImageZoom src="/assets/add-node.png" width={800} height={630} className="rounded-lg"/>
+
+Ko boste sledili navodilom, bodo delavci ali upravitelji prikazani v tabeli.
+
+<ImageZoom src="/assets/nodes.png" width={800} height={630} className="rounded-lg"/>

@@ -1,0 +1,32 @@
+---
+title: S3 Destinacije
+description: 'Konfigurirajte S3 buckets za shranjevanje varnostnih kopij. To vključuje nastavitev ključev za dostop, tajnih ključev, imen bucketov, regij in končnih točk.'
+---
+import { Callout } from 'fumadocs-ui/components/callout';
+
+
+Sekcija `S3 Destinations` je pomembna za varnostno kopiranje vaših podatkovnih baz. Dopušča kopiranje na AWS S3 buckete.
+
+## Akcije:
+
+1. **Ustvari**: Ustvarite novo S3 destinacijo.
+2. **Izbriši**: Brisanje S3 destinacije.
+3. **Urejanje**: Uredi S3 destinacijo.
+4. **Test**: Testirajte S3 destinacijo.
+
+### Ustvari
+
+Če želite ustvariti novo vedro S3, morate izpolniti obrazec.
+
+- **Ime**: This could be anything you want, it will be the name.
+- **Ključ za Dostop**: This is the access key that you will use to access your bucket.
+- **Skrivni Ključ**: This is the secret key that you will use to access your bucket.
+- **Bucket**: To bo uporabljeni bucket.
+- **Regija**: Regija bucketa.
+- **Končna Točka**: Končna točka, ki bo uporabljena za dostop do bucketa.   
+
+<Callout>
+ Na voljo je gumb `Test`, ki bo preveril povezavo z vašim bucketom, če bo pravilna, se bo prikazalo sporočilo o uspehu.
+</Callout>
+
+
